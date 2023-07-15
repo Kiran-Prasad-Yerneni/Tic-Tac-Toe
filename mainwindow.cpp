@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include <string>
+#include <QApplication>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -30,6 +32,8 @@ MainWindow::MainWindow(QWidget *parent)
         connect(pushButtons[i], SIGNAL(clicked()), this, SLOT(userPlayed()));
     }
     connect(ui->resetbtn, SIGNAL(clicked()), this, SLOT(newGame()));
+    connect(ui->exitbtn, SIGNAL(clicked()), this, SLOT(close()));
+
     ui->result->setText(QString("Player1's Turn"));
 }
 
