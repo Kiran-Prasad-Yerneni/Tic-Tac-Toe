@@ -29,15 +29,19 @@ MainWindow::MainWindow(QWidget *parent)
         pushButtons[i]->setText(QString(" "));
         connect(pushButtons[i], SIGNAL(clicked()), this, SLOT(userPlayed()));
     }
+    connect(ui->resetbtn, SIGNAL(clicked()), this, SLOT(newGame()));
     ui->result->setText(QString("Player1's Turn"));
 }
 
-void MainWindow::updateGUI()
+void MainWindow::newGame()
 {
-    int i = sender()->objectName().split("_")[1].toInt();
-    pushButtons[i-1]->setText(QString("O"));
-//    button->setText(QString(T.board[i][j]));
-
+    for (int i = 0; i < 9; ++i)
+    {
+        pushButtons[i]->setText(QString(" "));
+        T.board[(i)/3][(i)%3] = ' ';
+    }
+    ui->result->setText(QString("Player1's Turn"));
+    ui->resetbtn->setText(QString("Reset"));
 }
 
 void MainWindow::userPlayed()
@@ -54,11 +58,13 @@ void MainWindow::userPlayed()
         ans += '1' + turn;
         ans += " Wins!";
         ui->result->setText(QString::fromUtf8(ans));
+        ui->resetbtn->setText(QString("New Game"));
         return;
     }
     case gamestate::TIE:
     {
         ui->result->setText(QString("TIE!"));
+        ui->resetbtn->setText(QString("RESET"));
         return;
     }
     default:

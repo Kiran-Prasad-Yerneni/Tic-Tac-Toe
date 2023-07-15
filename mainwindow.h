@@ -22,7 +22,7 @@ public:
     char xo[2];
 
 private slots:
-    void updateGUI();
+    void newGame();
     void userPlayed();
 
 private:
