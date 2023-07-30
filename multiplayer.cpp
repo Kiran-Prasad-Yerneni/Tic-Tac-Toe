@@ -1,12 +1,13 @@
-#include "network.h"
+#include "multiplayer.h"
 
-Network::Network()
+Multiplayer::Multiplayer()
     : connection(-1)
+    , port(5500)
 {
-
+//    serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 }
 
-void Network::createServer()
+void Multiplayer::createServer()
 {
     int serverSocketHandler;
     do
@@ -41,7 +42,7 @@ void Network::createServer()
     close(serverSocketHandler);
 }
 
-int Network::recieve()
+int Multiplayer::recieve()
 {
     int ind;
     int rMsgSize;
@@ -59,7 +60,7 @@ int Network::recieve()
 }
 
 
-void Network::createClient()
+void Multiplayer::createClient()
 {
     do
     {
@@ -67,15 +68,10 @@ void Network::createClient()
     }
     while(connection < 0);
 
-    int connectionStatus;
-    do
-    {
-        connectionStatus = connect(connection, (struct sockaddr*) & serverAddr , sizeof(serverAddr));
-    }
-    while(connectionStatus < 0);
+    int connectionStatus = connect(connection, (struct sockaddr*) & serverAddr , sizeof(serverAddr));
 }
 
-void Network::sendInd(int ind)
+void Multiplayer::sendInd(int ind)
 {
     int connectionStatus;
     do
@@ -85,7 +81,7 @@ void Network::sendInd(int ind)
     while(connectionStatus < 0);
 }
 
-void Network::closeConnection()
+void Multiplayer::closeConnection()
 {
     if(connection != -1) {
         close(connection);
@@ -93,12 +89,29 @@ void Network::closeConnection()
     connection = -1;
 }
 
-bool Network::isConnected()
+bool Multiplayer::isConnected()
 {
     return connection != -1;
 }
 
-void Network::setServerAddress(sockaddr_in serverAddr)
+void Multiplayer::setServerAddress(sockaddr_in serverAddr)
 {
     this->serverAddr = serverAddr;
+}
+
+void Multiplayer::updatePort(int new_port)
+{
+    port = new_port;
+}
+
+//char* Multiplayer::showMyIP(char *str)
+//{
+//    inet_ntop(AF_INET, &(serverAddr.sin_addr), str, INET_ADDRSTRLEN);
+//    return inet_ntoa(serverAddr.sin_addr);
+//    return str;
+//}
+
+int Multiplayer::showMyPort()
+{
+    return port;
 }

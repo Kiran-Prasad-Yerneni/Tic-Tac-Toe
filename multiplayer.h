@@ -1,17 +1,17 @@
-#ifndef NETWORK_H
-#define NETWORK_H
+#ifndef MULTIPLAYER_H
+#define MULTIPLAYER_H
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 
-class Network
+class Multiplayer
 {
 private:
-    const int port = 5500;
+    int port;
     int connection;
-    struct sockaddr_in serverAddr, clientAddr;
+    sockaddr_in serverAddr, clientAddr;
 public:
-    Network();
+    Multiplayer();
 
     void createServer();
 
@@ -26,6 +26,11 @@ public:
     bool isConnected();
 
     void setServerAddress(struct sockaddr_in serverAddr);
+
+    void updatePort(int new_port);
+
+//    char * showMyIP(char *);
+    int showMyPort();
 };
 
-#endif // NETWORK_H
+#endif // MULTIPLAYER_H

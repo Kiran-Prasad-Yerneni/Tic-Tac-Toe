@@ -466,7 +466,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="gamepage">
      <widget class="QPushButton" name="exitbtn">
@@ -755,6 +755,24 @@
          </item>
         </layout>
        </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>6</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Leave empty for default Port No : 5500</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QPushButton" name="pushButton_back">
@@ -823,8 +841,26 @@
      <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionShow_my_IP_address"/>
+    <addaction name="actionChange_my_Port_number"/>
+   </widget>
+   <addaction name="menuFile"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionShow_my_IP_address">
+   <property name="text">
+    <string>Show my IP address</string>
+   </property>
+  </action>
+  <action name="actionChange_my_Port_number">
+   <property name="text">
+    <string>Change my Port number</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

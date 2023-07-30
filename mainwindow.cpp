@@ -3,16 +3,18 @@
 #include <string>
 #include <QApplication>
 #include <QMessageBox>
-#include <QDebug>
+#include<QInputDialog>
 #include<sys/socket.h>
 #include <arpa/inet.h>
+#include <QTcpSocket>
+
 
 MainWindow::MainWindow(QWidget *parent, int boardSize)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , boardSize(boardSize)
     , pushButtons(boardSize)
-    , N(Network())
+    , N(Multiplayer())
 {
     ui->setupUi(this);
     this->setWindowTitle("Tic Tac Toe");
@@ -137,6 +139,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_exitbtn_clicked()
 {
 //    close();
+    N.closeConnection();
     QApplication::quit();
 }
 
@@ -222,11 +225,43 @@ void MainWindow::on_pushButton_connect_clicked()
     struct sockaddr_in serverAddr;
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_addr.s_addr = inet_addr(ui->IP_4->displayText().toUtf8());
-    serverAddr.sin_port = htons(ui->IP_5->displayText().toInt());
+    int server_port = 5500;
+    if(!ui->IP_5->displayText().isEmpty())
+        server_port = ui->IP_5->displayText().toInt();
+    serverAddr.sin_port = htons(server_port);
     N.setServerAddress(serverAddr);
     //send request to server
     N.createClient();
     QMessageBox::information(this, "Tic Tac Toe", "Connection Successfull!");
     ui->stackedWidget->setCurrentIndex(0);
+}
+
+
+void MainWindow::on_actionChange_my_Port_number_triggered()
+{
+    bool ok;
+    int new_port = QInputDialog::getInt(this, "Change Port Number?", "Select a value between 2000 to 10000", 5500, 2000, 10000);
+    if(ok)
+        N.updatePort(new_port);
+}
+
+
+void MainWindow::on_actionShow_my_IP_address_triggered()
+{
+
+    QTcpSocket socket;
+    socket.connectToHost("8.8.8.8", 53);
+    if (socket.waitForConnected()) {
+        QString text = "IP Address: " + socket.localAddress().toString();
+        text += "\nPort No: " + QString::number(N.showMyPort());
+        QMessageBox::information(this, "IP address and Port Number", text);
+
+    } else {
+        QMessageBox msg;
+        msg.setText("Couldn't connect to the DNS server! No internet connection...");
+        msg.setWindowTitle("No internet connection");
+        msg.setIcon(QMessageBox::Critical);
+        msg.exec();
+    }
 }
 

@@ -4,7 +4,7 @@
 #include <QPushButton>
 #include <QMainWindow>
 #include "tictactoe.h"
-#include "network.h"
+#include "multiplayer.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -41,12 +41,16 @@ private slots:
 
     void on_pushButton_connect_clicked();
 
+    void on_actionChange_my_Port_number_triggered();
+
+    void on_actionShow_my_IP_address_triggered();
+
 private:
     Ui::MainWindow *ui;
     int boardSize;
     std::vector<QPushButton *> pushButtons;
     tictactoe T;
-    Network N;
+    Multiplayer N;
     int turn;
     int player;
     char xo[2];
